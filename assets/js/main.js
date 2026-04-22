@@ -190,3 +190,107 @@ function onWindowResize() {
 
 //
 
+function animate() {
+
+    timer.update();
+
+    const delta = timer.getDelta();
+
+    if (mixer) mixer.update(delta);
+
+    renderer.render(scene, camera);
+
+    stats.update();
+
+}
+let actions = {};
+let activeAction;
+
+function loadModel() {
+    loader.load('./assets/models/fbx/Zombie_Transition.fbx', function (fbx) {
+
+        object = fbx;
+        mixer = new THREE.AnimationMixer(object);
+
+        scene.add(object);
+
+        loadAnimations();
+    });
+}
+
+function loadAnimations() {
+    const animLoader = new FBXLoader();
+
+    for (let key in animationsList) {
+
+        animLoader.load(animationsList[key], function (anim) {
+             if (!mixer) return;
+
+            const clip = anim.animations[0];
+            const action = mixer.clipAction(clip);
+
+// 🔥 CONFIGURACIÓN PRO
+action.enabled = true;
+action.setEffectiveWeight(1);
+action.setEffectiveTimeScale(1);
+
+// evita congelamientos raros
+action.clampWhenFinished = false;
+action.loop = THREE.LoopRepeat;
+
+// 🔥 MUY IMPORTANTE
+action.zeroSlopeAtStart = true;
+action.zeroSlopeAtEnd = true;
+
+
+            actions[key] = action;
+            if (key === 'entry') {
+            activeAction = action;
+            action.play();
+}
+
+        });
+    }
+}
+
+function playAnimation(name) {
+
+    const newAction = actions[name];
+    if (!newAction || newAction === activeAction) return;
+
+    newAction.enabled = true;
+
+    // 🔥 iniciar sin reiniciar
+    newAction.paused = false;
+
+    if (activeAction) {
+
+        // 🔥 sincronización por progreso (no por tiempo directo)
+        const oldClip = activeAction.getClip();
+        const newClip = newAction.getClip();
+
+        const progress = activeAction.time / oldClip.duration;
+        newAction.time = progress * newClip.duration;
+
+        // 🔥 mezcla real
+        newAction.crossFadeFrom(activeAction, 1.2, true);
+
+    } else {
+        newAction.fadeIn(1.2);
+    }
+
+    newAction.play();
+    activeAction = newAction;
+}
+
+window.addEventListener('keydown', (e) => {
+
+    switch (e.key) {
+        case '1': playAnimation('death'); break;
+        case '2': playAnimation('entry'); break;
+        case '3': playAnimation('walk'); break;
+        case '4': playAnimation('crawl'); break;
+        case '5': playAnimation('transition'); break;
+    }
+
+});
