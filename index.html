@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <link rel="icon" type="image/png" href="./assets/img/marioneta.png">
+    <title>Figutra 3D graficada</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="./assets/css/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark navbar-custom">
+  <div class="container d-flex justify-content-between align-items-center">
+
+    <span class="nav-text">🧟 Zombie Animator</span>
+
+    <span class="nav-text text-center">Three.js + Mixamo</span>
+
+    <span class="nav-text">Animaciones 3D</span>
+
+  </div>
+</nav>
+  <div class="hud-menu">
+
+  <div class="title">Animaciones</div>
+
+  <div class="controls">
+    <div class="control-box"><span>1</span><small>Death</small></div>
+    <div class="control-box"><span>2</span><small>Entry</small></div>
+    <div class="control-box"><span>3</span><small>Walk</small></div>
+    <div class="control-box"><span>4</span><small>Crawl</small></div>
+    <div class="control-box"><span>5</span><small>Transition</small></div>
+  </div>
+
+</div>
+<!-- 🎮 PANEL DE CONTROL -->
+<div class="container mt-3">
+
+</div>
+
+<!-- ℹ️ INFO -->
+<div id="info" class="text-center mt-3">
+  <small>
+    Basado en Three.js y animaciones de Mixamo
+  </small>
+</div>
+
+<!-- 📦 THREE.JS -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./assets/build/three.module.js",
+    "three/addons/": "./assets/jsm/"
+  }
+}
+</script>
+
+<script type="module" src="./assets/js/main.js"></script>
+
+<!-- 🔻 FOOTER -->
+<footer class="footer-custom">
+  <small>© 2026 Jesus Roberto Hernandez</small>
+</footer>
+
+</body>
+
+</html>
